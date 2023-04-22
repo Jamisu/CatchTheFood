@@ -4,6 +4,9 @@ import "./style.css";
 const gameWidth = 800;
 const gameHeight = 600;
 
+const foodArray: Array<Sprite> = [];
+const cloudsArray: Array<Sprite> = [];
+
 export interface ImageDefinition {
     name: string;
     extension: string;
@@ -15,13 +18,18 @@ const app = new Application({
     width: gameWidth,
     height: gameHeight,
 });
-let temp = 10;
+
+let debounce = 1000;
+
 const animationUpdate = function (delta: number) {
     console.log("tick " + delta);
-    if (temp <= 0) {
+    if (debounce <= 0) {
         app.ticker.stop();
     }
-    temp--;
+    debounce--;
+    updateClouds();
+    // updateKnight();
+    // updateFood();
 };
 
 app.ticker.add(animationUpdate);
@@ -30,6 +38,7 @@ app.ticker.speed = 1;
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
 
+    // Construct HTML elements
     const container = document.createElement("div");
     const h = document.createElement("H1");
     h.innerHTML = "Cath The Food";
@@ -37,10 +46,14 @@ window.onload = async (): Promise<void> => {
     container.appendChild(app.view);
     document.body.appendChild(container);
 
+    // PIXI from now on
     const foodFromSprite = getFood();
-    foodFromSprite.anchor.set(0.5, 0.5);
-    foodFromSprite.position.set(gameWidth / 2, gameHeight - 16);
 
+    cloudsArray[0] = getCloud();
+    cloudsArray.push(cloudsArray[0]);
+    cloudsArray[0].y = 100;
+
+    app.stage.addChild(cloudsArray[0]);
     app.stage.addChild(foodFromSprite);
     app.stage.interactive = true;
 };
@@ -50,6 +63,7 @@ async function loadGameAssets(): Promise<void> {
         const loader = Loader.shared;
         loader.add("knight", "./assets/knight.json");
         loader.add("food", "./assets/food.png");
+        loader.add("cloud", "./assets/cloud1.png");
 
         loader.onComplete.once(() => {
             res();
@@ -64,8 +78,6 @@ async function loadGameAssets(): Promise<void> {
 }
 
 function getFood(): Sprite {
-    // const image: ImageDefinition = { name: "food", extension: "png", texture: undefined };
-    // image.texture = Loader.shared.resources[image.name].texture;
     const texture = Texture.from("food");
     texture.frame = new Rectangle(16, 0, 16, 15);
     texture.updateUvs();
@@ -85,9 +97,23 @@ function getKnight(): AnimatedSprite {
         Texture.from("knight_right_walk_2"),
     ]);
 
-    knight.animationSpeed = 0.1;
-    //knight.play();
     knight.scale.set(2);
 
     return knight;
+}
+
+function getCloud(): Sprite {
+    const cloud = new Sprite(Texture.from("cloud"));
+    cloud.scale.set(2);
+
+    return cloud;
+}
+
+function updateClouds(): void {
+    if (cloudsArray[0]) {
+        cloudsArray[0].x += 1;
+        if (cloudsArray[0].x <= -cloudsArray[0].width) {
+            console.log("cloud offscreen");
+        }
+    }
 }
