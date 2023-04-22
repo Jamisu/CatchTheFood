@@ -1,4 +1,5 @@
 import { Application, Loader, Texture, AnimatedSprite, Sprite, Rectangle, Ticker } from "pixi.js";
+import Knight from "./objects/knight/knight"
 import "./style.css";
 
 const gameWidth = 800;
@@ -45,9 +46,11 @@ window.onload = async (): Promise<void> => {
     container.appendChild(h);
     container.appendChild(app.view);
     document.body.appendChild(container);
+    document.title = "Catch The Food";
 
     // PIXI from now on
     const foodFromSprite = getFood();
+    const knightFromSprite = new Knight();
 
     cloudsArray[0] = getCloud();
     cloudsArray.push(cloudsArray[0]);
@@ -55,6 +58,7 @@ window.onload = async (): Promise<void> => {
 
     app.stage.addChild(cloudsArray[0]);
     app.stage.addChild(foodFromSprite);
+    app.stage.addChild(knightFromSprite);
     app.stage.interactive = true;
 };
 
@@ -86,21 +90,21 @@ function getFood(): Sprite {
     return food;
 }
 
-function getKnight(): AnimatedSprite {
-    const knight: AnimatedSprite = new AnimatedSprite([
-        Texture.from("knight_standing"),
+// function getKnight(): AnimatedSprite {
+//     const knight: AnimatedSprite = new AnimatedSprite([
+//         Texture.from("knight_standing"),
 
-        Texture.from("knight_left_walk_1"),
-        Texture.from("knight_left_walk_2"),
+//         Texture.from("knight_left_walk_1"),
+//         Texture.from("knight_left_walk_2"),
 
-        Texture.from("knight_right_walk_1"),
-        Texture.from("knight_right_walk_2"),
-    ]);
+//         Texture.from("knight_right_walk_1"),
+//         Texture.from("knight_right_walk_2"),
+//     ]);
 
-    knight.scale.set(2);
+//     knight.scale.set(2);
 
-    return knight;
-}
+//     return knight;
+// }
 
 function getCloud(): Sprite {
     const cloud = new Sprite(Texture.from("cloud"));
