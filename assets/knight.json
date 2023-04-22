@@ -1,0 +1,34 @@
+{
+    "frames": {
+        "knight_standing": {
+            "frame": { "x": 16, "y": 0, "w": 16, "h": 16 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+            "sourceSize": { "w": 16, "h": 16 }
+        },
+        "knight_left_walk_1": {
+            "frame": { "x": 16, "y": 16, "w": 16, "h": 16 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+            "sourceSize": { "w": 16, "h": 16 }
+        },
+        "knight_left_walk_2": {
+            "frame": { "x": 16, "y": 16, "w": 16, "h": 12 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 12 },
+            "sourceSize": { "w": 16, "h": 16 }
+        },
+        "knight_right_walk_1": {
+            "frame": { "x": 16, "y": 16, "w": 16, "h": 12 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 12 },
+            "sourceSize": { "w": 16, "h": 16 }
+        },
+        "knight_right_walk_2": {
+            "frame": { "x": 16, "y": 16, "w": 16, "h": 12 },
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 12 },
+            "sourceSize": { "w": 16, "h": 16 }
+        }
+    },
+    "meta": {
+        "image": "knight.png",
+        "size": { "w": 646, "h": 420 },
+        "scale": "1"
+    }
+}

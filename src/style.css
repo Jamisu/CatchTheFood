@@ -1,0 +1,12 @@
+body {
+    overflow: hidden;
+    margin: 0 auto;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    color: #dddddd;
+    text-align: center;
+}
