@@ -1,11 +1,14 @@
 import { Application, Loader, Texture, AnimatedSprite, Sprite, Rectangle, Ticker, Container } from "pixi.js";
 import Config from "./config/config"
+import FoodFactory from "./objects/food/foodFactory"
+import Food from "./objects/food/food";
 import Knight from "./objects/knight/knight"
 import "./style.css";
 
-const foodArray: Array<Sprite> = [];
 const cloudsArray: Array<Sprite> = [];
+const foodArray: Array<Food> = [];
 const gameContainer: Container = new Container();
+const foodFactory: FoodFactory = new FoodFactory();
 
 const app = new Application({
     backgroundColor: 0xd3d3d3,
@@ -13,6 +16,8 @@ const app = new Application({
     height: Config.gameHeight,
 });
 
+let score: number = 0;
+let cyclesToNewFood: number = Config.cyclesToNewFood;
 let debounce = Config.debounceFames;
 
 const animationUpdate = function (delta: number) {
@@ -40,10 +45,8 @@ window.onload = async (): Promise<void> => {
     document.title = "Catch The Food";
 
     // PIXI from now on
-    foodArray.push(getFood());
     const knightFromSprite = new Knight();
-
-    gameContainer.addChild(foodArray[0]);
+    serveFood();
     gameContainer.addChild(knightFromSprite);
 
     createCloud();
@@ -72,29 +75,20 @@ async function loadGameAssets(): Promise<void> {
     });
 }
 
-function getFood(): Sprite {
-    const texture = Texture.from("food");
-    texture.frame = new Rectangle(16, 0, 16, 15);
-    texture.updateUvs();
-    const food = new Sprite(texture);
-    food.scale.set(2);
-    return food;
-}
-
 function createCloud(): Sprite {
     const cloud = new Sprite(Texture.from("cloud"));
     cloud.scale.set(2);
     cloudsArray.push(cloud)
     app.stage.addChild(cloud);
     cloud.x = -cloud.width;
-    cloud.y = Math.floor(Math.random()*cloud.height)
+    cloud.y = Math.floor(Math.random()*cloud.height) - 50;
     return cloud;
 }
 
 function updateClouds(): void {
     if (cloudsArray.length) {
         cloudsArray.map((c) => {
-            c.x += Config.gridSize*10;
+            c.x += Config.gridSize*2;
             if (c.x >= Config.gameWidth) {
                 cloudsArray.shift();
                 c.destroy();
@@ -108,5 +102,25 @@ function updateClouds(): void {
 }
 
 function updateFood(): void {
-    foodArray.map((f) => f.y += 8);
+    if(foodArray.length) {
+        foodArray.map((f) => {
+            f.y += Config.gridSize;
+            if (f.y >= Config.gameHeight) {
+                foodArray.shift();
+                f.destroy();
+            }
+        });
+    }
+    if(cyclesToNewFood > 3) {
+        cyclesToNewFood--;
+    } else {
+        cyclesToNewFood = Config.cyclesToNewFood;
+        serveFood();
+    }
+}
+
+function serveFood(): void {
+    const newFood:Food = foodFactory.getNewFood()
+    foodArray.push(newFood)
+    gameContainer.addChild(newFood);
 }
