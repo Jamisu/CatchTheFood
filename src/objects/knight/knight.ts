@@ -14,4 +14,24 @@ export default class Knight extends AnimatedSprite {
         this.y = 520;
         this.gotoAndStop(0);
     }
+
+    knightStand(): void {
+        this.gotoAndStop(0);
+    };
+
+    knightStepLeft(): void {
+        if(this.currentFrame <= 1) {
+            this.gotoAndStop(2);
+        } else {
+            this.gotoAndStop(1);
+        }
+    };
+
+    knightStepRight(): void {
+        if(this.currentFrame <= 3) {
+            this.gotoAndStop(4);
+        } else {
+            this.gotoAndStop(3);
+        }
+    }
 }
