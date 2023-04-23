@@ -1,40 +1,31 @@
-import { Application, Loader, Texture, AnimatedSprite, Sprite, Rectangle, Ticker } from "pixi.js";
+import { Application, Loader, Texture, AnimatedSprite, Sprite, Rectangle, Ticker, Container } from "pixi.js";
+import Config from "./config/config"
 import Knight from "./objects/knight/knight"
 import "./style.css";
 
-const gameWidth = 800;
-const gameHeight = 600;
-
 const foodArray: Array<Sprite> = [];
 const cloudsArray: Array<Sprite> = [];
-
-export interface ImageDefinition {
-    name: string;
-    extension: string;
-    texture: Texture | undefined;
-}
+const gameContainer: Container = new Container();
 
 const app = new Application({
     backgroundColor: 0xd3d3d3,
-    width: gameWidth,
-    height: gameHeight,
+    width: Config.gameWidth,
+    height: Config.gameHeight,
 });
 
-let debounce = 1000;
+let debounce = Config.debounceFames;
 
 const animationUpdate = function (delta: number) {
-    console.log("tick " + delta);
     if (debounce <= 0) {
-        app.ticker.stop();
+        debounce = Config.debounceFames;
+        updateClouds();
+    //  updateKnight();
+        updateFood();
     }
     debounce--;
-    updateClouds();
-    // updateKnight();
-    // updateFood();
 };
 
 app.ticker.add(animationUpdate);
-app.ticker.speed = 1;
 
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
@@ -49,16 +40,16 @@ window.onload = async (): Promise<void> => {
     document.title = "Catch The Food";
 
     // PIXI from now on
-    const foodFromSprite = getFood();
+    foodArray.push(getFood());
     const knightFromSprite = new Knight();
 
-    cloudsArray[0] = getCloud();
-    cloudsArray.push(cloudsArray[0]);
-    cloudsArray[0].y = 100;
+    gameContainer.addChild(foodArray[0]);
+    gameContainer.addChild(knightFromSprite);
 
+    createCloud();
+
+    app.stage.addChild(gameContainer);
     app.stage.addChild(cloudsArray[0]);
-    app.stage.addChild(foodFromSprite);
-    app.stage.addChild(knightFromSprite);
     app.stage.interactive = true;
 };
 
@@ -90,34 +81,32 @@ function getFood(): Sprite {
     return food;
 }
 
-// function getKnight(): AnimatedSprite {
-//     const knight: AnimatedSprite = new AnimatedSprite([
-//         Texture.from("knight_standing"),
-
-//         Texture.from("knight_left_walk_1"),
-//         Texture.from("knight_left_walk_2"),
-
-//         Texture.from("knight_right_walk_1"),
-//         Texture.from("knight_right_walk_2"),
-//     ]);
-
-//     knight.scale.set(2);
-
-//     return knight;
-// }
-
-function getCloud(): Sprite {
+function createCloud(): Sprite {
     const cloud = new Sprite(Texture.from("cloud"));
     cloud.scale.set(2);
-
+    cloudsArray.push(cloud)
+    app.stage.addChild(cloud);
+    cloud.x = -cloud.width;
+    cloud.y = Math.floor(Math.random()*cloud.height)
     return cloud;
 }
 
 function updateClouds(): void {
-    if (cloudsArray[0]) {
-        cloudsArray[0].x += 1;
-        if (cloudsArray[0].x <= -cloudsArray[0].width) {
-            console.log("cloud offscreen");
-        }
+    if (cloudsArray.length) {
+        cloudsArray.map((c) => {
+            c.x += Config.gridSize*10;
+            if (c.x >= Config.gameWidth) {
+                cloudsArray.shift();
+                c.destroy();
+            }
+        }); 
     }
+
+    if(Math.random() > 0.95) {
+        createCloud();
+    }
+}
+
+function updateFood(): void {
+    foodArray.map((f) => f.y += 8);
 }
