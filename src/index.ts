@@ -23,7 +23,7 @@ let cyclesToNewFood: number = Config.cyclesToNewFood;
 let debounce = Config.debounceFames;
 let pressedKey: String = "none";
 
-const animationUpdate = function (delta: number) {
+const animationUpdate = function (delta: number): void {
     if (debounce <= 0) {
         debounce = Config.debounceFames;
         updateClouds();
@@ -104,6 +104,7 @@ function updateClouds(): void {
         cloudsArray.map((c) => {
             c.x += Config.gridSize*2;
             if (c.x >= Config.gameWidth) {
+                c.parent.removeChild(c);
                 cloudsArray.shift();
                 c.destroy();
             }
