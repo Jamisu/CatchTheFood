@@ -18,6 +18,7 @@ const app = new Application({
 });
 
 let score: number = 0;
+let lives: number = Config.defaultLives;
 let cyclesToNewFood: number = Config.cyclesToNewFood;
 let debounce = Config.debounceFames;
 let pressedKey: String = "none";
@@ -135,6 +136,11 @@ function updateFood(): void {
             if (f.y >= Config.gameHeight) {
                 foodArray.shift();
                 f.destroy();
+                lives--;
+                if (lives <= 0) {
+                    app.ticker.stop();
+                    //  END GAME
+                }
             }
         });
     }

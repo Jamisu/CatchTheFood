@@ -1,6 +1,8 @@
 import { Texture } from "pixi.js"
 
 export default class Config {
+static defaultLives: number = 10;
+
     static gameWidth: number = 800;
     static gameHeight: number = 600;
 
