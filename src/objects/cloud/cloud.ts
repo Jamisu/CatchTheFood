@@ -41,4 +41,11 @@ export default class Clouds extends Sprite {
             this.createCloud(cloudContainer);
         }
     }
+
+    static removeClouds(): void {
+        this.cloudsArray.forEach( c => {
+            c.parent.removeChild(c);
+        });
+        Clouds.setCloudsArray([]);
+    }
 }

@@ -95,10 +95,7 @@ const keyUpListener = (e:KeyboardEvent): void => {
 
 const START_GAME = (): void => {
     //  Clear Stage
-    Clouds.getCloudsArray().forEach( c => {
-        c.parent.removeChild(c);
-    });
-    Clouds.setCloudsArray([]);
+    Clouds.removeClouds();
 
     foodArray.forEach( f => {
         f.parent.removeChild(f);
