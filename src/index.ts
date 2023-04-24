@@ -1,6 +1,7 @@
 import { Application, Loader, Texture, AnimatedSprite, Sprite, Container } from "pixi.js";
 import Config from "./config/config"
 import FoodFactory from "./objects/food/foodFactory"
+import Clouds from "./objects/cloud/cloud"
 import Food from "./objects/food/food";
 import Knight from "./objects/knight/knight";
 import Lifes from "./screens/lifes"
@@ -8,7 +9,6 @@ import Score from "./screens/score"
 import Button from "./screens/button"
 import "./style.css";
 
-let cloudsArray: Array<Sprite> = [];
 let foodArray: Array<Food> = [];
 let knightFromSprite: Knight;
 const lifesContainer: Lifes = new Lifes();
@@ -94,10 +94,10 @@ const keyUpListener = (e:KeyboardEvent): void => {
 
 const START_GAME = (): void => {
     //  Clear Stage
-    cloudsArray.forEach( c => {
+    Clouds.getCloudsArray().forEach( c => {
         c.parent.removeChild(c);
     });
-    cloudsArray = [];
+    Clouds.setCloudsArray([]);
 
     foodArray.forEach( f => {
         f.parent.removeChild(f);
@@ -133,7 +133,7 @@ const createCloud = (): Sprite => {
     const cloud = new Sprite(Texture.from("cloud"));
     
     cloud.scale.set(2);
-    cloudsArray.push(cloud)
+    Clouds.getCloudsArray().push(cloud)
     gameContainer.addChild(cloud);
     cloud.x = -cloud.width;
     cloud.y = Math.floor(Math.random()*cloud.height) - 50;
@@ -142,6 +142,7 @@ const createCloud = (): Sprite => {
 }
 
 const updateClouds = (): void => {
+    const cloudsArray: Array<Sprite> = Clouds.getCloudsArray();
     if (cloudsArray.length) {
         cloudsArray.map((c) => {
             c.x += Config.gridSize*2;
@@ -150,7 +151,7 @@ const updateClouds = (): void => {
                 cloudsArray.shift();
                 c.destroy();
             }
-        }); 
+        });
     }
 
     if(Math.random() > 0.95) {
