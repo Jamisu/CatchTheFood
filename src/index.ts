@@ -4,12 +4,14 @@ import FoodFactory from "./objects/food/foodFactory"
 import Food from "./objects/food/food";
 import Knight from "./objects/knight/knight";
 import Lifes from "./screens/lifes"
+import Score from "./screens/score"
 import "./style.css";
 
 const cloudsArray: Array<Sprite> = [];
 const foodArray: Array<Food> = [];
 let knightFromSprite: Knight;
 const lifesContainer: Lifes = new Lifes();
+const scoreContainer: Score = new Score();
 const gameContainer: Container = new Container();
 
 const app = new Application({
@@ -18,7 +20,6 @@ const app = new Application({
     height: Config.gameHeight,
 });
 
-let score: number = 0;
 let cyclesToNewFood: number = Config.cyclesToNewFood;
 let debounce: number = Config.debounceFames;
 let pressedKey: String = "none";
@@ -37,13 +38,17 @@ window.onload = async (): Promise<void> => {
     // PIXI from now on
     knightFromSprite = new Knight();
     gameContainer.addChild(knightFromSprite);
+    
     app.stage.addChild(gameContainer);
     app.stage.addChild(lifesContainer);
+    app.stage.addChild(scoreContainer);
     
     window.addEventListener("keydown", keyDownListener, false);
     window.addEventListener("keyup", keyUpListener, false);
     
     lifesContainer.resetLifes();
+    scoreContainer.resetScore();
+    
     createCloud();
     serveFood();
     app.stage.interactive = true;
@@ -137,8 +142,8 @@ const updateFood = (): void => {
             if(hitTestRectangle(f, knightFromSprite)) {
                 f.setAnimatedDeath();
                 foodArray.shift();
-                score ++;
-                console.log("SCORE: ", score);
+                scoreContainer.setScore(scoreContainer.getScore()+1);
+                console.log("SCORE: ", scoreContainer.getScore());
                 return;
             }
 
@@ -158,7 +163,7 @@ const updateFood = (): void => {
     if(cyclesToNewFood > 5) {
         cyclesToNewFood--;
     } else {
-        cyclesToNewFood = Config.cyclesToNewFood - score;
+        cyclesToNewFood = Config.cyclesToNewFood - scoreContainer.getScore();
         serveFood();
     }
 }

@@ -1,6 +1,10 @@
 import { Texture } from "pixi.js"
 
 export default class Config {
+    static knightFrames: Array<string> = [
+        "knight_standing", "knight_left_walk_1", "knight_left_walk_2", "knight_right_walk_1", "knight_right_walk_2"
+    ];
+
     static defaultLifes: number = 10;
 
     static gameWidth: number = 800;
