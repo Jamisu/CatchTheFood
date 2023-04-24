@@ -1,18 +1,15 @@
 # simple pixi-typescript-webpack game
 
-There is still much TODO, especially splitting the main class into separate components
-
 ## Config.ts
 
 -   defaultLifes - 10
--   gameWidth - 
--   gameHeight - 
 -   debounceFames - used for pixel-style movement (refreshes 1/N-th frame), and optimisation
 for fast pace game set it to 1.
 in future adaptation there will be food that speeds up only the knight for couple of seconds
+fools app.ticker
 
--   gridSize - 
--   cyclesToNewFood - 
+-   gridSize - step for moving elements in pixels per cycle
+-   cyclesToNewFood - instead of randomised, its regular, but speeds up with score up
 
 ## Commands:
 
@@ -24,3 +21,11 @@ in future adaptation there will be food that speeds up only the knight for coupl
 
 use arrowLeft and arrowRight to control the Knight
 enjoy
+
+# TODO
+
+- remove unused dependencies from package.json
+- further refactor main class to achive greater abstraction
+
+- add powerUp food to speedUp the Knight (size.set(3))
+- add lifeUp food (maybe some filters)
