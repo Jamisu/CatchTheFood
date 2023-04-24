@@ -77,7 +77,7 @@ const animationUpdate = function (delta: number): void {
     if (debounce <= 0) {
         debounce = Config.debounceFames;
         Clouds.updateClouds(cloudsContainer);
-        updateKnight();    
+        knightFromSprite.updateKnight(pressedKey);    
         updateFood();
     }
     debounce--;
@@ -161,26 +161,6 @@ const updateFood = (): void => {
     } else {
         cyclesToNewFood = Config.cyclesToNewFood - scoreContainer.getScore();
         serveFood();
-    }
-}
-
-const updateKnight = (): void => {
-    if (pressedKey === "ArrowLeft") {
-        knightFromSprite.knightStepLeft();
-        knightFromSprite.x -= Config.gridSize * 2;
-        if(knightFromSprite.x <= 0) {
-            knightFromSprite.x = 0;
-        }
-        return;
-    } else if(pressedKey === "ArrowRight") {
-        knightFromSprite.knightStepRight();
-        knightFromSprite.x += Config.gridSize * 2;
-        if(knightFromSprite.x >= Config.gameWidth - knightFromSprite.width) {
-            knightFromSprite.x = Config.gameWidth - knightFromSprite.width;
-        }
-        return;
-    } else {
-        knightFromSprite.knightStand();
     }
 }
 

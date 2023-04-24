@@ -33,4 +33,25 @@ export default class Knight extends AnimatedSprite {
     knightCenter(): void {
         this.x = Config.gameWidth / 2 - this.width / 2;
     }
+
+
+    updateKnight = (pressedKey: String): void => {
+        if (pressedKey === "ArrowLeft") {
+            this.knightStepLeft();
+            this.x -= Config.gridSize * 2;
+            if(this.x <= 0) {
+                this.x = 0;
+            }
+            return;
+        } else if(pressedKey === "ArrowRight") {
+            this.knightStepRight();
+            this.x += Config.gridSize * 2;
+            if(this.x >= Config.gameWidth - this.width) {
+                this.x = Config.gameWidth - this.width;
+            }
+            return;
+        } else {
+            this.knightStand();
+        }
+    }
 }
