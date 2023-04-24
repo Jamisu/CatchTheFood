@@ -27,4 +27,8 @@ export default class Knight extends AnimatedSprite {
             this.gotoAndStop(3);
         }
     }
+
+    knightCenter(): void {
+        this.x = Config.gameWidth / 2 - this.width / 2;
+    }
 }

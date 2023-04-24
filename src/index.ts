@@ -5,14 +5,16 @@ import Food from "./objects/food/food";
 import Knight from "./objects/knight/knight";
 import Lifes from "./screens/lifes"
 import Score from "./screens/score"
+import Button from "./screens/button"
 import "./style.css";
 
-const cloudsArray: Array<Sprite> = [];
-const foodArray: Array<Food> = [];
+let cloudsArray: Array<Sprite> = [];
+let foodArray: Array<Food> = [];
 let knightFromSprite: Knight;
 const lifesContainer: Lifes = new Lifes();
 const scoreContainer: Score = new Score();
 const gameContainer: Container = new Container();
+const playButton: Button = new Button();
 
 const app = new Application({
     backgroundColor: 0xd3d3d3,
@@ -37,22 +39,18 @@ window.onload = async (): Promise<void> => {
 
     // PIXI from now on
     knightFromSprite = new Knight();
-    gameContainer.addChild(knightFromSprite);
     
-    app.stage.addChild(gameContainer);
-    app.stage.addChild(lifesContainer);
-    app.stage.addChild(scoreContainer);
+    app.stage.addChild(playButton);
+
+    playButton.addListener("mousedown", (e) => {
+        START_GAME();
+    });
     
     window.addEventListener("keydown", keyDownListener, false);
     window.addEventListener("keyup", keyUpListener, false);
     
-    lifesContainer.resetLifes();
-    scoreContainer.resetScore();
-    
-    createCloud();
-    serveFood();
     app.stage.interactive = true;
-    app.ticker.start();
+    app.ticker.update()
 };
 
 const loadGameAssets = async(): Promise<void> => {
@@ -95,21 +93,51 @@ const keyUpListener = (e:KeyboardEvent): void => {
 }
 
 const START_GAME = (): void => {
+    //  Clear Stage
+    cloudsArray.forEach( c => {
+        c.parent.removeChild(c);
+    });
+    cloudsArray = [];
 
+    foodArray.forEach( f => {
+        f.parent.removeChild(f);
+    });
+    foodArray = [];
+
+    //  Add elements anew
+    app.stage.addChild(gameContainer);
+    app.stage.addChild(lifesContainer);
+    app.stage.addChild(scoreContainer);
+    gameContainer.addChild(knightFromSprite);
+
+    knightFromSprite.knightCenter();
+    lifesContainer.resetLifes();
+    scoreContainer.resetScore();
+
+    createCloud();
+    serveFood();
+
+    app.stage.addChild(playButton);
+    playButton.visible = false;
+    app.ticker.start();
 }
 
 const END_GAME = (): void => {
-
+    app.ticker.stop();
+    playButton.replayText();
+    playButton.visible = true;
 }
 
 
 const createCloud = (): Sprite => {
     const cloud = new Sprite(Texture.from("cloud"));
+    
     cloud.scale.set(2);
     cloudsArray.push(cloud)
     gameContainer.addChild(cloud);
     cloud.x = -cloud.width;
     cloud.y = Math.floor(Math.random()*cloud.height) - 50;
+    
     return cloud;
 }
 
@@ -153,8 +181,7 @@ const updateFood = (): void => {
                 lifesContainer.takeLife();
 
                 if (lifesContainer.getLifes() <= 0) {
-                    app.ticker.stop();
-                    //  END GAME
+                    END_GAME();
                 }
             }
         });

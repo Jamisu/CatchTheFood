@@ -8,6 +8,13 @@ export default class Lifes extends Sprite {
     private lifesArray: Array<Food> = [];
 
     resetLifes(): void {
+        //  Clear any remains
+        this.lifesArray.forEach( l => {
+            l.parent.removeChild(l);
+        })
+        this.lifesArray = [];
+
+        //  Create new lifes
         this.lifes = Config.defaultLifes;
 
         for (let i = this.lifes; i >= 0; i--) {

@@ -15,16 +15,19 @@ export default class Button extends Sprite {
 
     constructor() {
         super();
+        this.interactive = true;
+        this.buttonMode = true;
+        this.cursor = 'pointer';
         this.anchor.set(0.5, 0.5);
         this.x = Config.gameWidth / 2;
         this.y = Config.gameHeight / 2;
         this.buttonText.text = "PLAY";
         this.buttonText.anchor.set(0.5, 0.5);
-        this.background.beginFill(0xFFFFFF); // Color it black
+        this.background.beginFill(0xFFFFFF);
         this.background.drawRoundedRect(
-            (-this.buttonText.width / 2) -5,
+            (-this.buttonText.width / 2) -75,
             (-this.buttonText.height / 2) - 5,
-            this.buttonText.width + 10,
+            this.buttonText.width + 150,
             50,
             10
         );
@@ -35,11 +38,5 @@ export default class Button extends Sprite {
 
     replayText(): void {
         this.buttonText.text = "PLAY AGAIN";
-    }
-
-    delayedInit() {
-        this.buttonText.x = this.width / 2 - this.buttonText.width / 2;
-        this.y = Config.gameHeight / 2 - this.height / 2;
-        this.x = Config.gameWidth / 2 - this.width / 2;
     }
 }
