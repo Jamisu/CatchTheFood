@@ -20,7 +20,7 @@ const app = new Application({
 let score: number = 0;
 let lives: number = Config.defaultLives;
 let cyclesToNewFood: number = Config.cyclesToNewFood;
-let debounce = Config.debounceFames;
+let debounce: number = Config.debounceFames;
 let pressedKey: String = "none";
 
 const animationUpdate = function (delta: number): void {
@@ -63,10 +63,10 @@ window.onload = async (): Promise<void> => {
     app.ticker.start();
 };
 
-const keyDownListener = (e:KeyboardEvent) => {
+const keyDownListener = (e:KeyboardEvent): void => {
     pressedKey = e.key;
 }
-const keyUpListener = (e:KeyboardEvent) => {
+const keyUpListener = (e:KeyboardEvent): void => {
     pressedKey = "none";
 }
 
