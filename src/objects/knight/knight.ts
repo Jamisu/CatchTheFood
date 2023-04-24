@@ -2,6 +2,8 @@ import { AnimatedSprite, Texture, FrameObject, Resource } from 'pixi.js'
 import Config from '../../config/config';
 
 export default class Knight extends AnimatedSprite {
+    private static knightInstance: Knight | undefined;
+
     constructor () {
         super(Config.knightFrames.map(a => Texture.from(a)));
         this.y = 520;

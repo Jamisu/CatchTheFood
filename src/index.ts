@@ -11,6 +11,7 @@ import "./style.css";
 
 let foodArray: Array<Food> = [];
 let knightFromSprite: Knight;
+const cloudsContainer: Clouds = new Clouds();
 const lifesContainer: Lifes = new Lifes();
 const scoreContainer: Score = new Score();
 const gameContainer: Container = new Container();
@@ -75,7 +76,7 @@ const loadGameAssets = async(): Promise<void> => {
 const animationUpdate = function (delta: number): void {
     if (debounce <= 0) {
         debounce = Config.debounceFames;
-        updateClouds();
+        Clouds.updateClouds(cloudsContainer);
         updateKnight();    
         updateFood();
     }
@@ -106,6 +107,7 @@ const START_GAME = (): void => {
 
     //  Add elements anew
     app.stage.addChild(gameContainer);
+    app.stage.addChild(cloudsContainer);
     app.stage.addChild(lifesContainer);
     app.stage.addChild(scoreContainer);
     gameContainer.addChild(knightFromSprite);
@@ -114,7 +116,7 @@ const START_GAME = (): void => {
     lifesContainer.resetLifes();
     scoreContainer.resetScore();
 
-    createCloud();
+    Clouds.createCloud(cloudsContainer);
     serveFood();
 
     app.stage.addChild(playButton);
@@ -126,37 +128,6 @@ const END_GAME = (): void => {
     app.ticker.stop();
     playButton.replayText();
     playButton.visible = true;
-}
-
-
-const createCloud = (): Sprite => {
-    const cloud = new Sprite(Texture.from("cloud"));
-    
-    cloud.scale.set(2);
-    Clouds.getCloudsArray().push(cloud)
-    gameContainer.addChild(cloud);
-    cloud.x = -cloud.width;
-    cloud.y = Math.floor(Math.random()*cloud.height) - 50;
-    
-    return cloud;
-}
-
-const updateClouds = (): void => {
-    const cloudsArray: Array<Sprite> = Clouds.getCloudsArray();
-    if (cloudsArray.length) {
-        cloudsArray.map((c) => {
-            c.x += Config.gridSize*2;
-            if (c.x >= Config.gameWidth) {
-                c.parent.removeChild(c);
-                cloudsArray.shift();
-                c.destroy();
-            }
-        });
-    }
-
-    if(Math.random() > 0.95) {
-        createCloud();
-    }
 }
 
 const serveFood = (): void => {

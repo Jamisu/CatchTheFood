@@ -2,6 +2,18 @@
 
 There is still much TODO, especially splitting the main class into separate components
 
+## Config.ts
+
+-   defaultLifes - 10
+-   gameWidth - 
+-   gameHeight - 
+-   debounceFames - used for pixel-style movement (refreshes 1/N-th frame), and optimisation
+for fast pace game set it to 1.
+in future adaptation there will be food that speeds up only the knight for couple of seconds
+
+-   gridSize - 
+-   cyclesToNewFood - 
+
 ## Commands:
 
 -   `npm run build` - starts build procedure
