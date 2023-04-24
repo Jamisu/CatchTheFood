@@ -3,10 +3,13 @@ import Config from "../../config/config";
 import Food from "./food"
 
 export default class FoodFactory {
-    getNewFood(row?: number, column?: number): Food {
+    static getNewFood(row?: number, column?: number): Food {
+
+        const argRow: number | undefined = (row) ? row * 16 : undefined;
+        const argColumn: number | undefined = (column) ? column * 16 : undefined;
     
-        const fRow: number = row || Math.floor( Math.random() * 8 ) * 16;
-        const fColumn: number = column || Math.floor( Math.random() * 8 ) * 16;
+        const fRow: number = argRow || Math.floor( Math.random() * 8 ) * 16;
+        const fColumn: number = argColumn || Math.floor( Math.random() * 8 ) * 16;
 
         const tex: Texture = Texture.from("food");
         tex.frame = new Rectangle(fColumn, fRow, 16, 16);

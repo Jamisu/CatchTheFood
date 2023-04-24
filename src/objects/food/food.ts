@@ -29,4 +29,13 @@ export default class Food extends Sprite {
         that.y -= 5;
         that._timeToDie --;
     }
+
+    quickDeath(): void {
+        this.parent.removeChild(this);
+        this.destroy();
+    }
+
+    coloriseFood(color?: number): void {
+        this.tint = color || 0xFF0000;
+    }
 }
