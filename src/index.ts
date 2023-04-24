@@ -23,30 +23,16 @@ let cyclesToNewFood: number = Config.cyclesToNewFood;
 let debounce: number = Config.debounceFames;
 let pressedKey: String = "none";
 
-const animationUpdate = function (delta: number): void {
-    if (debounce <= 0) {
-        debounce = Config.debounceFames;
-        updateClouds();
-        updateKnight();    
-        updateFood();
-    }
-    debounce--;
-};
-
-app.ticker.add(animationUpdate);
-app.ticker.stop();
-
 window.onload = async (): Promise<void> => {
     await loadGameAssets();
 
     // Construct HTML elements
     const container = document.createElement("div");
     const h = document.createElement("H1");
-    h.innerHTML = "Cath The Food";
     container.appendChild(h);
     container.appendChild(app.view);
     document.body.appendChild(container);
-    document.title = "Catch The Food";
+    document.title = h.innerHTML = "Catch The Food";
 
     // PIXI from now on
     serveFood();
@@ -63,14 +49,7 @@ window.onload = async (): Promise<void> => {
     app.ticker.start();
 };
 
-const keyDownListener = (e:KeyboardEvent): void => {
-    pressedKey = e.key;
-}
-const keyUpListener = (e:KeyboardEvent): void => {
-    pressedKey = "none";
-}
-
-async function loadGameAssets(): Promise<void> {
+const loadGameAssets = async(): Promise<void> => {
     return new Promise((res, rej) => {
         const loader = Loader.shared;
         loader.add("knight", "./assets/knight.json");
@@ -89,7 +68,27 @@ async function loadGameAssets(): Promise<void> {
     });
 }
 
-function createCloud(): Sprite {
+const animationUpdate = function (delta: number): void {
+    if (debounce <= 0) {
+        debounce = Config.debounceFames;
+        updateClouds();
+        updateKnight();    
+        updateFood();
+    }
+    debounce--;
+};
+
+app.ticker.add(animationUpdate);
+app.ticker.stop();
+
+const keyDownListener = (e:KeyboardEvent): void => {
+    pressedKey = e.key;
+}
+const keyUpListener = (e:KeyboardEvent): void => {
+    pressedKey = "none";
+}
+
+const createCloud = (): Sprite => {
     const cloud = new Sprite(Texture.from("cloud"));
     cloud.scale.set(2);
     cloudsArray.push(cloud)
@@ -99,7 +98,7 @@ function createCloud(): Sprite {
     return cloud;
 }
 
-function updateClouds(): void {
+const updateClouds = (): void => {
     if (cloudsArray.length) {
         cloudsArray.map((c) => {
             c.x += Config.gridSize*2;
@@ -116,13 +115,13 @@ function updateClouds(): void {
     }
 }
 
-function serveFood(): void {
+const serveFood = (): void => {
     const newFood:Food = foodFactory.getNewFood();
     foodArray.push(newFood);
     gameContainer.addChild(newFood);
 }
 
-function updateFood(): void {
+const updateFood = (): void => {
     if(foodArray.length) {
         foodArray.map((f) => {
             if(hitTestRectangle(f, knightFromSprite)) {
@@ -153,7 +152,7 @@ function updateFood(): void {
     }
 }
 
-function updateKnight(): void {
+const updateKnight = (): void => {
     if (pressedKey === "ArrowLeft") {
         knightFromSprite.knightStepLeft();
         knightFromSprite.x -= Config.gridSize * 2;
@@ -173,7 +172,7 @@ function updateKnight(): void {
     }
 }
 
-function hitTestRectangle(a:Sprite, b:AnimatedSprite): Boolean
+const hitTestRectangle = (a:Sprite, b:AnimatedSprite): Boolean =>
 {
     if(a !== null && b !== null) {
         var ab = a.getBounds();

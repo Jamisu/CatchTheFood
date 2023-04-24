@@ -1,6 +1,6 @@
 # simple pixi-typescript-webpack game
 
-there is still much TODO, especially splitting the main class into separate components
+There is still much TODO, especially splitting the main class into separate components
 
 ## Commands:
 
