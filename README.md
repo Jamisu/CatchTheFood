@@ -22,4 +22,5 @@ in future adaptation there will be food that speeds up only the knight for coupl
 -   `npm run code-coverage` - generate code coverage report
 -   `npm run code-style-check` - run's eslint and prettier check on your code
 
+use arrowLeft and arrowRight to control the Knight
 enjoy
