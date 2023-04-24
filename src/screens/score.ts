@@ -13,7 +13,7 @@ export default class Score extends Sprite {
         this.score = 0;
         this.addChild(this.scoreText);
         this.x = 10;
-       // this.scoreText.
+        this.scoreText.text = this.score;
     }
 
     setScore(score: number): void {
