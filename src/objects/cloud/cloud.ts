@@ -13,7 +13,7 @@ export default class Clouds extends Sprite {
         return Clouds.cloudsArray;
     }
 
-    static createCloud = (cloudContainer: Sprite): Sprite => {
+    static createCloud(cloudContainer: Sprite): Sprite {
         const cloud = new Sprite(Texture.from("cloud"));
         
         cloud.scale.set(2);
@@ -25,7 +25,7 @@ export default class Clouds extends Sprite {
         return cloud;
     }
     
-    static updateClouds = (cloudContainer: Sprite): void => {
+    static updateClouds(cloudContainer: Sprite): void {
         if (this.cloudsArray.length) {
             this.cloudsArray.map((c) => {
                 c.x += Config.gridSize * 2;

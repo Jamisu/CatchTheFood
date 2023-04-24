@@ -35,7 +35,7 @@ export default class Knight extends AnimatedSprite {
     }
 
 
-    updateKnight = (pressedKey: String): void => {
+    updateKnight(pressedKey: String): void {
         if (pressedKey === "ArrowLeft") {
             this.knightStepLeft();
             this.x -= Config.gridSize * 2;
