@@ -29,6 +29,6 @@ enjoy
 - further refactor main class to achive greater abstraction
 - add basic unit testing (Jest)
 
-- add powerUp food to speedUp the Knight (size.set(3))
+- add powerUp bigFood (foodItem.size.set(3)) to speedUp the Knight 
 - add lifeUp food (maybe some filters)
 - add sword hit animation when food is taken
