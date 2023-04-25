@@ -1,4 +1,4 @@
-import { Application, Loader, Texture, AnimatedSprite, Sprite, Container } from "pixi.js";
+import { Application, Loader, AnimatedSprite, Sprite, Container } from "pixi.js";
 import Config from "./config/config"
 import FoodFactory from "./objects/food/foodFactory"
 import Clouds from "./objects/cloud/cloud"
